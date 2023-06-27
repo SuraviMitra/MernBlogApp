@@ -1,4 +1,4 @@
-import grid from "gridfs-stream";
+import Grid from "gridfs-stream";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -16,7 +16,7 @@ conn.once("open", () => {
     bucketName: "fs",
   });
 
-  gfs = grid(conn.db, mongoose.mongo);
+  gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection("fs");
 });
 
