@@ -5,9 +5,9 @@ import commentModel from "../model/commentModel.js";
 export const newComment = async (request, response) => {
   try {
     //requesting for a new comment
-    const comment = await new commentModel(request.body);
+    const comment = new commentModel(request.body);
     //save the comment
-    comment.save();
+    await comment.save();
 
     //giving resonse for successfully saving comment
     response.status(200).json("Comment saved successfully");

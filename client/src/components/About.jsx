@@ -27,9 +27,9 @@ const About = () => {
     <Box>
       <Banner />
       <Wrapper>
-        <Typography variant='h3'>Yash Verma</Typography>
+        <Typography variant='h3'>Suravi Mitra</Typography>
         <Text variant='h5'>
-          Hi, I'm Yash Verma from NSUT.
+          Hi, I'm Suravi Mitra.
           <br />
           If you are interested, you can view some of my favorite projects here
           <Box component='span' style={{ marginLeft: 5 }}>

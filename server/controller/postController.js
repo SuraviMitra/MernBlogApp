@@ -40,9 +40,9 @@ export const deletePost = async (request, response) => {
   try {
     const post = await postModel.findById(request.params.id);
     //after the post found
-    await post.delte();
+    await post.delete();
 
-    response.status(200), json("Post deleted successfully");
+    response.status(200).json("Post deleted successfully");
   } catch (error) {
     //if error will occur and post will not get deleted
     response.status(500).json(error);
@@ -54,7 +54,7 @@ export const getPost = async (request, response) => {
   try {
     const post = await postModel.findById(request.params.id);
     //after the post found
-    response.status(200).json(error);
+    response.status(200).json(post);
   } catch (error) {
     //if error will occur
     response.status(500).json(error);

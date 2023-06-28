@@ -1,9 +1,6 @@
 import axios from "axios";
 import { APIMessages, axiosAPICalls } from "./config.js";
 import { getAccessToken, getType } from "./tokens.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 // URL of server
 const API_URL = process.env.REACT_APP_BASE_URL;

@@ -12,7 +12,7 @@ const storage = new GridFsStorage({
   options: { useNewUrlParser: true },
   file: (_request, file) => {
     const match = ["image/png", "image/jpg", "image/jpeg"];
-    if (match.indexOf(file.memeType) === -1) {
+    if (match.indexOf(file.memetype) === -1) {
       return `${Date.now()}-blog-${file.originalname}`;
     }
 

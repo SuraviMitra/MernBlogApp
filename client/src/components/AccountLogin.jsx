@@ -93,6 +93,7 @@ const AccountLogin = ({ isUserAuthenticated }) => {
   };
 
   const loginUser = async () => {
+    try{
     let response = await API.userLogin(login);
 
     if (response.isSuccess) {
@@ -108,9 +109,13 @@ const AccountLogin = ({ isUserAuthenticated }) => {
     } else {
       showError('Something went wrong! please try again later');
     }
+  }catch(error){
+    showError('An error occurred while logging in. Please try again later.');
+  }
   };
 
   const signupUser = async () => {
+    try{
     let response = await API.userSignup(signup);
 
     if (response.isSuccess) {
@@ -120,6 +125,9 @@ const AccountLogin = ({ isUserAuthenticated }) => {
     } else {
       showError('Something went wrong! please try again later');
     }
+  }catch(error){
+    showError('An error occurred while signing up. Please try again later.');
+  }
   };
 
   const toggleSignup = () => {

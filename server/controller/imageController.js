@@ -1,4 +1,5 @@
-import grid from "gridfs-stream";
+import Grid from "gridfs-stream";
+import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -12,11 +13,11 @@ let gfs, gridfsBucket;
 const conn = mongoose.connection;
 
 conn.once("open", () => {
-  gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+  gridfsBucket = new GridFSBucket(conn.db, {
     bucketName: "fs",
   });
 
-  gfs = grid(conn.db, mongoose.mongo);
+  gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection("fs");
 });
 
@@ -35,8 +36,13 @@ export const uploadImage = (request, response) => {
 ////creating a variable to get image
 export const getImage = async (request, response) => {
   try {
-    const file = await gfs.files.findOne({ filename: request.params.filename });
-    const readStream = gridfsBucket.openDownloadStream(file._id);
+    const file = await gridfsBucket
+      .find({ filename: request.params.filename })
+      .toArray();
+    if (!file || file.length == 0) {
+      return response.status(404).json({ msg: "File not found" });
+    }
+    const readStream = gridfsBucket.openDownloadStream(file[0]._id);
     readStream.pipe(response);
   } catch (error) {
     //if error will occur
