@@ -1,5 +1,8 @@
 import Grid from "gridfs-stream";
+<<<<<<< HEAD
 import { GridFSBucket } from "mongodb";
+=======
+>>>>>>> 311273ad192cef0a236e122aac3b184d80aaad8c
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 

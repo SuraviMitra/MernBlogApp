@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DataProvider from "./utils/DataProvider";
-import Home from "./components/Home";
-import PostCreate from "./components/PostCreate";
-import PostDetailView from "./components/PostDetailView";
-import PostUpdate from "./components/PostUpdate";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Login from "./components/AccountLogin";
-import PrivateRoute from "./utils/PrivateRoute";
-import Header from "./components/Header";
+import DataProvider from "./utils/DataProvider.jsx";
+import Home from "./components/Home.jsx";
+import PostCreate from "./components/PostCreate.jsx";
+import PostDetailView from "./components/PostDetailView.jsx";
+import PostUpdate from "./components/PostUpdate.jsx";
+import About from "./components/About.jsx";
+import Contact from "./components/Contact.jsx";
+import Login from "./components/AccountLogin.jsx";
+import PrivateRoute from "./utils/PrivateRoute.jsx";
+import Header from "./components/Header.jsx";
 
 const App = () => {
   const [isAuthenticated, isUserAuthenticated] = useState(false);
