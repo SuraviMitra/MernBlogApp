@@ -1,0 +1,629 @@
+<------------------------------------------------------------------------MERN BLOG APP--------------------------------------------------------------------->
+
+1.SERVER
+2.CLIENT
+------------------------------------------------------------------------------------------------
+
+1.Lets make the ******************************************SERVER************************************************************** first---------------------->
+
+
+->In the terminal---1. mkdir server
+                    2. cd server (move to the server side)
+                    3. npm init (package.json will be installed in server side)
+                    4. npm i express (from this package-lock.json and node modules will be installed)->from this we can create rest APIs.
+
+***NOTE
+---------
+(REST API) 
+is an architectural style that defines a set of constraints to be used for creating web services. REST API is a way of accessing web services in a simple and flexible way without having any processing.
+ 
+                    5. Now we can see one dependency already in the package.json .i.e. EXPRESS
+                    6. DEPENDENCY--->
+                                     1. Express- npm i express
+                                     2. Mongoose- npm i mongoose (to connect to database)
+                                     3. dotevn - npm i dotenv (to secure the databse)
+                                     4. cors - npm i cors (to properly sync from node to react without any problem)
+                                     5. body-parser- npm i body-parser (for sending json data from node to react application)
+                                     6. bcrypt- npm i bcrypt (for hashing and storing password)
+                                 **  7. nodemon- npm i nodemon (automatically restarting the node application when file changes in the directory)
+                                     8. multer- npm i multer ( used for uploading files,  It is a node.js middleware for handling multipart/form-data)
+                                     9. jsonwebtoken - npm i jsonwebtoken (It makes use of node-jws) , 
+                                                            (Asynchronous) If a callback is supplied, the callback is called with the err or the JWT.
+
+                                                             (Synchronous) Returns the JsonWebToken as string
+
+                                                             payload could be an object literal, buffer or string representing valid JSON.
+(Here a token is generated which we can decrypt using unique key)
+
+
+PAYLOAD-->packets or chunks of data sent to the server and that cannot be accessed ordinarily. 
+
+                                     10. gridfs-stream- npm i gridfs-stream (Writable/Readable Nodejs compatible GridFS streams)
+                                     11. multer-gridfs-storage- npm i multer-gridfs-storage (GridFS storage engine for Multer to store uploaded files                       
+
+directly to MongoDb)
+
+
+-----------------------------------
+
+->Now in the server folder we have ho make a file      ****(index.js)
+   1. importing the express package 
+   2. Now we can make rest objects with the help of express package import earlier it will give us a app object with the help of which we will listen the server at any port  (const app = express())
+Now all the functionality of the server will be in this app object.
+   3.Now we will listen the server in the required port we want to listen with a call back function
+      app.listen(PORT, ()=>{})
+                        This is a call back function ()=>{}
+** 4.A '$' in a variable means nothing special to the interpreter
+   5.Now importing all the packages that we installed in the dependecies (cors and bodyparser)
+   6.Now adding the middlewares for ex. app.use(cors())
+   7.app.use(bodyparser.urlencoded({extended:true})--->if extended: true, then you can parse nested objects, or generally any type.
+                                                       if extended: false, then you can only parse strings or arrays.
+   *** app.use(bodyParser.json()) basically tells the system that you want json to be used.
+   *** bodyParser.urlencoded({extended: ...}) basically tells the system whether you want to use a simple algorithm for shallow parsing (i.e. false) or complex algorithm for deep parsing that can deal with nested objects (i.e. true).
+   8.Now importing the dotenv file used for the security of the application.
+   9. Now after configing dotenv file in index.js we are creating a file in the root as (.env) and firstly adding port no. in .env
+   10. estalishing mongodb connection after mongodbConnection.js is setup.
+
+
+
+
+***.env--------------------->
+1.Adding port number 
+2.Make a variable DB_URI = paste the connection string you have copied from the mongodb and change the required username and password you have made in the mongodb.
+3.Now we have to do the configuration->
+whenever we use jsonwebtoken we have to provide secret for the key.It can be created by writing
+JWT_ACESS_SECRET= you can write any secret key(using this key only our token will be decrypt).
+4.Now for expiration of the key we have to create
+JWT_ACCESS_EXPIREIN= .i.e. 15min.
+5.Similarly for cookie we have to create both JWT_REFRESH_TOKEN & its
+JWT_REFRESH_EXPIREIN.
+6.Make the base url to connect the api name  BASE_API
+
+
+
+
+
+------------------------FOR SETTING UP MONGODB DATABASE---------------------------------------
+1.first move to the mongodb website
+2.create new cluster(use shared hosting)
+3.Go to browse collection where the database made by the user will be shown
+4.Now go to database access in the left side and you have to create a new user so that we can access the datebase with the mongodbcompass or application.
+5.Now we have to go to the network access in the left hand side and add the ip address.
+6.Now in the database option click on connect 
+7.Connect using the mongodb compass.
+8.copy the connection string and go to vs code in .env file and follow the step 2 in .env file
+
+
+
+-------------------------------------------------------------------------
+->Now after completing upto this steps make a folder in server as database. now in the database we have to establish a connection with the mongoose 
+ for that make a file in database mongodbConnection.js.
+->move to mongodbConnection.js
+
+
+---------------***mongodbConnection.js---->
+1.import the mongoose package that we have installed in the depency earlier.
+2. Now creating a function mongodbconnection with async arrow function
+3.export it.
+4.Now adding tyr catch is used in the async arrow function so that we can properly handle response and error.
+5.In the catch we are printing console.log to print the error if occured.
+6.In the try we will check wheather our connection is established or not.
+7.We will do await to connect  the database with the help of mongoose.
+**8.the useNewUrlParser flag to allow users to fall back to the old parser if they find a bug in the new parser.
+9.Now establishing mongodb connection in index.js
+
+
+
+						FINALLY ON RUN COMMAND YOU WILL GET TO SEE THE OUTPUT IN THE TERMINAL
+					    ----------------------------SERVER RUNNING ON PORT--------------------------
+				---------------------------------CONNECTED TO THE DATABASE SUCCESSFULLY-----------------------------
+
+
+  
+
+2.Lets make the ***************************************CLIENT********************************************************************** --------------------->
+And also creating REST API
+
+    
+    1. In the root go to command prompt and run-->npx create-react-app client (it will create the client directory for us)
+    2. After installing client move to cd clinent and now we have to install some dependencies in the client package.json file
+    3. DEPENDENCY--->
+           1. axios--> npm i axios (It is use to deal network request because we have to send network request to the REST APIs from react to node server)
+           2. react-router-dom--> npm i react-router-dom (For routing functionality)
+           3. @mui/material--> npm install @mui/material (for this we have to first go to the (https://mui.com) then copy the code)
+           4. similarly install  @emotion/react @emotion/styled from @mui/material 
+           5. installs icons also from -> npm install @mui/icons-material
+     4. Now run npm start you can see a web page is open in the browser in port https://localhost:3000 where we can see react symbol
+     5. Now in client folder in src we have to first move to App.js.
+
+
+
+***App.js---------------->
+1.In the App.js file we have to first remove the default header.
+2.
+
+
+
+creating Rest APIs and connecting it to the frontend 
+
+------>In the server side*****************************
+
+***Model-------------------->
+1.In the server folder create a new folder name model (for **mcv pattern for multiple functioning, it contains(view layer,controller etc) so that each part can be managed separately and accordingly)->by using this our application will build fast and saves time and maintains efficiency.
+##Here we will add all the user schemas.
+
+***Routes---------------------->
+2.similarly for routes we will make another folder in server side name route
+##Here we will add all the routes
+
+***Controller------------------>
+3.Similarly to handle all the callback functions we will make a folder in server side name controller.
+##It will handel all the callback functions.
+
+
+--->Similarly in the client side we will make*****************************
+
+1.In the client src folder we will first make components folder.
+2.Now we will make a folder name utils
+If we want to create any function or class we can make it here as a utility function.
+
+
+-------------->Now lets create the model***********
+1.First we have to make a new file in model name userModel.js
+as it is related to the user only.--Go to userModel.js---
+2.After creating usermodel now we have to create the tokens for that we have to make tokeModel in model.--Go to tokenSchema.js---
+3.Now postModel is created.--Go to postModel.js----
+4.Now commentModel is created.--Go to commentModel.js----
+5.4.Now categoryModel is created.--Go to categoryModel.js----
+
+
+1@
+***userModel.js--------------->
+1.In the userModel.js we have to first import the mongoose.
+2. Now the models will be created, as it is related to the user so it will be name as userSchema
+const userSchema= mongoose.Schema({object}).
+3.Then export the schema. for export we have to first make a variable name const user and link it with the mongoose.
+4.Now since we have made the models now we have to make the objects as mentioned in point 2
+so types are made according to your project requirement.In my project it is name, username, password.
+*Here the username and password should be unique so we have to add unique key there and make its value true.
+
+2@
+***tokeModel.js--------------->
+1.In the tokenModel.js we have to first import the mongoose.
+2. Now similarly the models will be created, as it is related to the user so it will be name as TokenSchema
+const TokenSchema= mongoose.Schema({object}).
+3.Then export the schema. for export we have to first make a variable name const user and link it with the mongoose.
+4,Object model is token.
+
+3@
+***postModel.js--------------->
+1.In the postModel.js we have to first import the mongoose.
+2. Now similarly the models will be created, as it is related to the user so it will be name as PostSchema
+const PostSchema= mongoose.Schema({object}).
+3.Then export the schema. for export we have to first make a variable name const user and link it with the mongoose.
+4.object types include title,description,picture,username,categories,createddate
+
+
+----------------NOTE--------------------------------------------------------------------------------------
+****REQUIRED:true|false---->Specifies whether a text field should be a required part of form submission.
+true - The text field is a required part of form submission
+false - Default. The text field is not a required part of form submission.
+****SCHEMA------->The Schema allows you to define the fields stored in each document along with their validation requirements and default values.
+------------------------------------------------------------------------------------------------------------
+
+
+4@
+***commentModel.js----------------------->
+1.In the commentModel.js we have to first import the mongoose.
+2. Now similarly the models will be created, as it is related to the user so it will be name as CommentSchema
+const CommentSchema= mongoose.Schema({object}).
+3.Then export the schema. for export we have to first make a variable name const user and link it with the mongoose.
+4.object types include name,postId,date,comment.
+
+5@
+***categoryModel.js----------------------->
+1.In the categoryModel.js we have to first import the mongoose.
+2. Now similarly the models will be created, as it is related to the user so it will be name as CategorySchema
+const CategorySchema= mongoose.Schema({object}).
+3.Then export the schema. for export we have to first make a variable name const user and link it with the mongoose.
+4.object types include name.
+
+
+
+
+-------------->Now lets create the Routes***********
+
+Routes->It refers to how an application’s endpoints (URIs) respond to client requests.
+*VImp* The application “listens” for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback   function.
+
+1.Now lets make a file in in the routes folder as route.js
+(it will handle all post and get requests).
+
+2.firstly import express from the express package.
+3.Then make a varible for routing purpose .e.g.
+const router=express.Router();
+4.Now start creating the Routes. 
+5.Now while creating routes we are first making the post,get and delete method for ex->
+router.post('/login',callbackfunction);
+6.We are here creating all the callback functions separately in the controller folder we made earlier in the server side.
+In my project i will create 6 controllers for the routes callback they are->
+  1.for user (login, signup, logout)
+  2.for token (createtoken)
+  3.for post (create,update,delete)
+  4.for image (authenticate, get all post)
+  5.for file (upload image, get image)
+  6.for comment (new comment, get comment, delete comment)
+7.Now export the router and also call te router in the server side index.js and 
+Now lets go to the controller folder.
+
+
+-------------->Now lets create the Controller***********
+as we saw in the models for models we created routes and for routes callbackfunction we will bw creating its respective callbackController
+
+@1 
+***userController.js----------------------->
+
+1.Firstly importing all the packages respectively.
+2.Now import the userModel from the model folder that we have been already created.
+3.Now fistly creating a variable for the user signup followed by a async callback arrow function-->
+  now in the call back function we gonne pass request and response.
+4.Now try catch function is called
+
+------------------NOTE---------------------------------------------------------------------------------------------------------------------------------
+Q. What is the use of try-catch function ?
+A. The try...catch statement is comprised of a try block and either a catch block, a finally block, or both. The code in the try block is executed first, and if it throws an exception, the code in the catch block will be executed. The code in the finally block will always be executed before control flow exits the entire construct.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+5.Now in the try we are first creating a variable for the password recieved that is to be hashed named hashedPassword
+6.Now passing the hash function in it  hash(data: string | Buffer, saltOrRounds: string | number);
+7.creating a var user for requesting the (username, name, password} to fetch from the body.
+8.Now if there is a new user
+  declare a var newUser in the userModel then save it through save function and await is used so that it will wait for the promise to return.
+**Promise can be defined as it will take time and wait for the answer if it is fullfilled ans will return else it will be rejected/error will occur.
+9.After the await function recieves data then we will return the response in json format that the 
+   signup is successfull.
+
+--------------------------NOTE---------------------------------------------------------------------------------------------------------------------
+JSON --> json format is '{"name":"John", "age":30, "car":null}'
+JSON stands for JavaScript Object Notation
+JSON is a text format for storing and transporting data
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+10.Now if error is catch, then in response it will return 
+   Error while signing up user.
+
+
+
+11.now creating new variable for logkin of the user loginUser.
+12.Then if it is not a valid user then it will return an error message in response.
+13.Now we are using the try catch to match or validate the secret key.
+14.if the password match then it will return in response name and username if not error will occur password does not match with 400 error 
+
+15.Now lets create for logout.
+16.firstly a token variable is created that request the token from the body.
+17.Then deleteOne delete the token with response for the user that logout is successful with status(204).
+18. If error wii le catch it will return a message in response error while logging out with status(500).
+
+
+
+@2
+***tokenController.js----------------------->
+
+1.Firstly importing all the required packages for creating token(jwt,dotenv & the token model)
+2.Now we have to config the dotenv by dotenv.configure().
+3.Now creating the middleware for authentiacte the token.
+4.Firstly we have to authenticate the token by sending request and response.
+5.Then a variable is made authHeather is made which requets the header for authorisation
+6.Now if the token is null it will give a message in response The token is missing with status code(404).
+7.Now the jsonwebtoken will verify the access key of the user if error occur it will give a message in response Invalid token with status(403).
+
+8.Now if there is no token present new token will bw created for creating new token we have to first create a new variable createNewToken with async and await request response callback arrow function.
+try{
+9.then a variable is created for the refreshtoken.
+10.if refresh token will not valid-->error response is generated with status(404) refresh toke is not valid.
+11.Now similarly verify the token if error occur 500 status code error with message Invalid refresh token.
+12.Now access the token with the secret key ACCESS_SECRET_KEY we made earlier in the .env file.
+13.and after accessing return response accessToken with status(200).
+}
+catch{
+14.if error occur in catch it will return msg error while creating token with status(500)
+}
+
+
+@3
+***postController.js----------------------->
+
+1.Firstly importing the postModel from model that we have earlier created to create its callback in the postController.
+2.Then as in the router.js we have call we have to create here 3 operations(create post, update post & delete post).
+   
+    1.Create Post--------------->
+       1.first we have to create a variable createpost with request and response and try and catch.
+       2.We have to give it aysnc/await function so that it will wait for the function to create the post and then return the output.
+       3.try{
+   Firstly it will request for the new post after creating new post it will save it and give a response message Post saved successfully with status(200)
+             }
+       4.ctach{
+IF error occur it will give error with status code(500).
+               }
+
+
+    2.Upate Post--------------->
+        1.first we have to create a variable updatepost with request and response and try and catch.
+        2. try{
+---------------------------NOTE----------------------------------------------------------------------
+params--->first we have to create a variable createpost with request and response and try and catch
+-------------------------------------------------------------------------------------------------------
+
+Then it will try to find the post by findById if it is not found it will return an error message POST NOT FOUND with status(404).
+If found it will await/wait for the function to update the post by findByAndUpdate and after updation it will return a message in response POAT UPDATED SUCCESSFULLY with status(200).
+               }
+         3. catch{
+It will return a error response message with status (500).
+                 }
+
+ 
+
+    3.Delete Post--------------->
+         1.first we have to create a variable deletepost with request and response and try and catch.
+         2.try{
+First the post is requested to find by id with the help of findById function then await/wait till the post is found,
+Then it is deleted with a response message POST DELETED SUCCESSFULLY with status(200)
+              }
+         3.catch {
+If error occur it will return error with status(500)
+                  }
+
+
+    4.Get Post--------------->
+          1.first we have to create a variable getpost with request and response and try and catch.
+          2.try{
+First the post is requested to find by id with the help of findById function then await/wait till the post is found,
+Then return response with status(200) with the post.
+                }
+          3.catch{
+If error occur it will return error with status(500)
+                 }
+
+
+    5.Get All Post--------------->
+           1.first we have to create a variable getAllPost with request and response and try and catch.
+           2.here we will make 3 variables(username, category and posts to get all the posts)
+           3.try {
+It will find the post using if/else condition...firstly if will go in 
+if{
+where it has to find by username.
+}
+if not then it will go in 
+else if {
+where it eill find by category 
+}
+if not then enter in 
+else{
+ where it find model as null
+}
+and finally return the get post with status(200)
+                   }
+            4.catch{
+If error occur it will return error with status(500)
+                 }
+
+
+@4
+***imageController.js----------------------->
+
+1.Firstly importing the imageModel from model that we have earlier created to create its callback in the imageController.
+2.we have to now configure the database using dotenv.config().
+3.Now declare a variable url to store the base URL that we have created in the .env file.
+4.Then as in the router.js we have call we have to create here 2 operations(upload image & get image).
+   1.upload image------->
+       1.First we have to create a variable to upload image.
+       2.If the file does not exist and not found it will return an error message in response FILE NOT FOUND with status (404).
+       
+   2.Get image---------->
+       1.try{
+It will first request to find the image in the respective file
+If found read the stream and download it and then return response.
+            }
+       2.If error occur it will return a error response with(500) status  code.
+
+
+
+
+@5
+***fileController.js----------------------->
+
+1.Firstly importing all the required packages (multer, gridfs-storage, dotenv)
+2.Now let us configure the database by dotenv.config();
+3.Now we are going to make a variable name storage.
+
+
+@6
+***commentController.js----------------------->
+1.Firstly importing the commentModel from the model folder that we have earlier created.
+2.Then we will create variables for the required operations we have to perform in the routes(new comment, get comment, delete comment).
+    
+   1.New Comment--------->
+         1.Firstly creating a variable for the new comment with request and response followed by a callback function.
+         2.In the call back function we will implement try-catch error where
+         3.try{
+It will await for the new comment from the body after the new comment recieved it will save it with a response to the user COMMENT SAVED SUCCESSFULLY with status (200).
+              }
+         4.catch{
+If an error will occur it will return error with status code(500).
+               }
+
+
+    2.Get Comment--------->
+         1.Firstly creating a variable for the Get comment with request and response followed by a callback function.
+         2.In the call back function we will implement try-catch error where
+         3.try{
+It will await/wait for the comment to find from the body by using findById after the comment found it give a response to the user with status (200).
+              }
+         4.catch{
+If an error will occur it will return error with status code(500).
+               }
+
+
+     3.Delete Comment--------->
+         1.Firstly creating a variable for the delete comment with request and response followed by a callback function.
+         2.In the call back function we will implement try-catch error where
+         3.try{
+It will await/wait for the comment to find from the body by using findById after the comment found it will delete it with a response to the user COMMENT DELETED SUCCESSFULLY with status (200).
+              }
+         4.catch{
+If an error will occur it will return error with status code(500).
+               }
+
+--------------------------------------AFTER THIS YOUR ALL SERVER PART WILL BE COMPLETED---------------------------------------------------------------------
+
+-------------------------------------NOW LETS MAKE THE CLIENT PART------------------------------------------------------------------------------------------
+
+
+1.Now in the client folder as we have already created the utils folder there Now we have to make the utility files
+   1.Tokens.js
+   2.data.js
+   3.config.js
+   4.api.js
+   5.PrivateRoute.js
+   6.DataProvider.js
+
+
+@1
+token.js-------------->
+-------------------------------NOTE------------------------------------------------------------------------------------------------------------------------
+****RefreshToken----> It is a longer-lived token which can be used to request new JWT Tokens transparently (i.e without forcing the User to manually re-authenticate) and will be populated with the latest snapshot of the Users Session.
+****BearerToken----> It is needed to make the request although since the Service Client automatically fetches new JWT Tokens with the configured RefreshToken you only need to populate the RefreshToken.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1.To get the access token firstly a variable is made getAccessToken
+which session storage .i.e. designed to store data temporarily for a particular session. 
+ 
+  2.Similary for refresh token a variable is amde getrefreshToken.
+  3. Now after getting the access token and refresh token they are set.
+  4.Now a variable is created getType to request the value and return it from the body.
+  5.Else if query if occured.
+  6.Then if the query is object in the body it will return id if not then it will return the body.
+
+@2
+data.js-------------->
+   1.In the data.js firstly a variable is made which stores the id and type of the data category.
+   2.The categories include-->
+       1.Movies
+       2.Sports
+       3.Tech
+       4.Music
+       5.Fashion
+
+@3
+config.js-------------->
+       1.// Axios API calls { name of API: { url: '/', method: 'post/get/put/delete' } }
+       2.Here firstly all the api calls are done for the respective operations.
+           ->login
+           ->signup
+           ->posts
+           ->token
+           ->file/upload
+           ->create
+           ->delete
+           ->post
+           ->comment/new
+           ->comment
+           ->comment/delete
+           ->update
+        3.Now all the api messages are written within a variable name APIMessages.(loading, success, network failure, network error)
+
+
+@4
+api.js-------------->
+
+-----------------------NOTE---------------------------------------------------------------------------------------------------------------------------------
+****AXIOS--> Axios is used to send an HTTP request and handle their responses, all using JavaScript's promises. Axios supports both Node.js and JavaScript in the browser. Axios is also free and open-source.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+       1.Firstly import the axios package from axios.
+       2.Now calling the APIMessages and axiosAPICalls from the config.js we have earlier made in the utils folder.
+       3.Constants: The code defines a constant variable API_URL which represents the base URL of the server.The value is retrived from the environment variable REACT_APP_BASE_URL.
+       4.Axios Instance: An instance of axios is created using axios.create().It is configured with the base URL, a timeout of 30secs and a default header specifying the content type as JSON.
+       5.Request Interceptor: An interceptor is added to the Axios instance using axiosInstance.interceptor.request.use().The interceptor modifies the request configuration before it is sent.If the config.Type.params property exists.otherwise if config.Type.query exists,it append it to the request URL.
+        6.Response Interceptor: An interceptor is added to the Axios instance using axiosInstance.interceptors.response.use(). The interceptor handles the response received from the server. If the response status is 200, it returns an object indicating success with the response data. Otherwise, it returns an object indicating failure with relevant information such as the status, message, and code.
+        7.Helper Functions: Two helper functions are defined outside the Axios instance:
+
+processResponse: It processes the response object and returns a formatted response object indicating success or failure.
+processError: It processes the error object and returns a formatted error object indicating the type of error that occurred.
+        8.API Function Creation: An empty object API is defined. Then, for each key-value pair in the axiosAPICalls object, a new key-value pair is added to the API object. The key represents the API call name, and the value is a function that utilizes the Axios instance to make the corresponding HTTP request. The function takes a body parameter (request payload) and constructs the Axios request configuration based on the information provided in axiosAPICalls and getType. It also includes an authorization header with the access token obtained from getAccessToken.
+
+       9.Export: The API object is exported from the module, making it available for use in other parts of the codebase.
+
+---------->Overall, this code provides a structured way to make API calls using Axios and includes request and response interceptors for handling modifications and error handling. The exported API object acts as a wrapper around Axios, encapsulating the API calls and their configurations.
+
+
+
+@5
+DataProvider.jsx-------------->
+       1.This code is a React component that utilizes the Context API to create a data context and provide it to its child components. Here's an explanation of what the code does:
+
+       2.Imports: The code imports the necessary dependencies from the 'react' package, including createContext and useState.
+
+       3.Context Creation: The code creates a new data context using createContext(null). The createContext function returns an object with two properties: Provider and Consumer. The Provider component is responsible for providing the context value to its child components, while the Consumer component allows consuming the context value within other components.
+
+       4.DataProvider Component: The code defines a React functional component named DataProvider. It takes a single prop children, which represents the child components that will be wrapped by the DataContext.Provider.
+
+       5.State Management: Inside the DataProvider component, the useState hook is used to create a state variable named account and its corresponding setter function setAccount. The initial value of account is an object with empty name and username properties.
+
+       6.Context Provider: The DataProvider component returns the DataContext.Provider component as its root element. The value prop of the provider is set to an object containing the account state and the setAccount function. This object will be the value of the data context and will be accessible to any child component that consumes the context.
+
+       7.Children Rendering: The DataProvider component renders the children prop, which represents the child components that are wrapped by the DataContext.Provider. This allows the child components to access the data context and consume the provided values.
+
+       8.Export: The DataProvider component is exported as the default export of the module, making it available for use in other parts of the codebase.
+
+Overall, this code sets up a data context using the Context API in React. It provides a context value containing an account object and a setter function for modifying the account state. The DataProvider component wraps its child components with the DataContext.Provider, allowing the child components to consume the context value and access the account state and setAccount function.
+
+
+@6
+PrivateRoute.jsx-------------->
+       1.This code is a React component named PrivateRoute that is used to create a private route in a React application using the React Router library. Here's an explanation of what the code does:
+
+       2.Imports: The code imports two components, Navigate and Outlet, from the react-router-dom package. These components are used for navigation and routing within a React application.
+
+       3.PrivateRoute Component: The code defines a React functional component named PrivateRoute. It takes a single prop named isAuthenticated. This prop is typically passed from a parent component to determine if the user is authenticated or not.
+
+       4.Token Retrieval: Inside the PrivateRoute component, the sessionStorage.getItem() method is used to retrieve the value of the accessToken from the browser's session storage. It assigns the token to the token variable.
+       5.Conditional Rendering: The PrivateRoute component uses a ternary operator to conditionally render content based on the isAuthenticated prop and the token value. If both isAuthenticated and token are truthy, it renders the <Outlet /> component. The <Outlet /> component is a placeholder that allows the rendering of child routes and components defined within the parent route.
+
+       6.Navigation: If either isAuthenticated or token is falsy, indicating that the user is not authenticated or the token is not present, the component renders the <Navigate /> component. The <Navigate /> component is used for programmatic navigation and redirects the user to the /account path using the to prop. The replace prop is used to replace the current URL in the browser's history stack, meaning that the user won't be able to go back to the previous page by pressing the back button.
+
+       7.Export: The PrivateRoute component is exported as the default export of the module, making it available for use in other parts of the codebase.
+       8. Overall, this code provides a way to create a private route in a React application. If the user is authenticated and a valid access token is present in the session storage, the component renders the child routes or components defined within it. Otherwise, it redirects the user to the /account path, assuming that it is the login or account creation page
+       
+       
+
+------------------Now lets write the COMPONENTS part--------------------------------------------------------------------------------------------------->
+1.About.jsx
+2.AcoountLogin.jsx
+3.Banner.jsx
+4.Categories.jsx
+5.CommentDetails.jsx
+6.Comments.jsx
+7.Header.jsx
+8.Home.jsx
+9.PostCreate.jsx
+10.PostDetails.jsx
+11.Posts.jsx
+12.PostUpdate.jsx
+
+
+
+
+
+
+########################-------------------------NOW FINALLY YOU HAVE YOUR BLOG WEBSITE READY TO USE------------>##########################################
+
+
+
+
+
+ 
+
+
+
+
+
